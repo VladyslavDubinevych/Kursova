@@ -6,11 +6,11 @@ if (!isset($_SESSION['comp'])) {
     // Якщо змінної немає, створюємо пустий масив
     $_SESSION['comp'] = array();
 }
-// Перевірка, чи було відправлено ідентифікатор пристрою для порівняння через POST-запит
+// Перевірка, чи було відправлено ідентифікатор для порівняння через POST-запит
 if (isset($_POST['id_mob'])) {
     // Отримання ідентифікатора пристрою з POST-запиту
     $id = $_POST['id_mob'];
-    // Перевірка, чи пристрій вже присутній у списку порівняльних пристроїв
+    // Перевірка
     foreach ($_SESSION['comp'] as $row) {
         // Якщо так, перенаправлення на головну сторінку та завершення виконання скрипта
         if ($row == $id) {
@@ -18,7 +18,7 @@ if (isset($_POST['id_mob'])) {
             die();
         }
     }
-    // Додавання ідентифікатора пристрою до списку порівняльних пристроїв
+    // Додавання ідентифікатора
     array_push($_SESSION['comp'], $id);
     // Перенаправлення на головну сторінку та завершення виконання скрипта
     header('Location: index.php');
@@ -31,7 +31,7 @@ if (isset($_POST['id_mob'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width" initial-scale=1.0>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Система з вибору мобільних пристроїв</title>
+    <title>Система з вибору </title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <!-- Шрифт Awesome -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
@@ -43,7 +43,7 @@ if (isset($_POST['id_mob'])) {
 <header>
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
         <!-- Заголовок з посиланням на головну сторінку -->
-        <h5 class="my-0 mr-md-auto font-weight-normal"><a href="/">Вибір мобільних пристроїв</a></h5>
+        <h5 class="my-0 mr-md-auto font-weight-normal"><a href="/">Вибір</a></h5>
         <!-- Поле для введення тексту пошуку -->
         <div class="md-form active-purple-4 col-lg-4">
             <input class="form-control" type="text" placeholder="Search" aria-label="Search">
@@ -74,15 +74,15 @@ if (isset($_POST['id_mob'])) {
         <!-- Кнопка для відправлення форми та виклику обробника для видалення порівнянь -->
         <button class="btn btn-outline-primary btn-lg btn-block mb-3" type="submit">Clear comparison</button>
     </form>
-    <!-- Таблиця для відображення заголовків порівнюваних мобільних пристроїв -->
+    <!-- Таблиця для відображення заголовків  -->
     <table class="table">
         <thead class="thead-light">
         <tr>
             <?php
-            // Цикл для виведення заголовків колонок на основі порівнюваних мобільних пристроїв
+            // Цикл для виведення заголовків колонок 
             foreach ($_SESSION['comp'] as $row) {
-                // Запит до бази даних для отримання інформації про мобільний пристрій за його ідентифікатором
-                $query = "SELECT * FROM smartphone INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
+                // Запит до бази даних для отримання інформації за його ідентифікатором
+                $query = "SELECT * FROM clothes INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
                 $res = mysqli_query($connect, $query);
                 // Виведення заголовків колонок на основі результату запиту
                 while ($raw = mysqli_fetch_array($res)) {
@@ -95,9 +95,9 @@ if (isset($_POST['id_mob'])) {
         <tbody>
         <tr>
             <?php
-            // Цикл для виведення значень фотографії для порівнюваних мобільних пристроїв
+            // Цикл для виведення значень фотографії 
             foreach ($_SESSION['comp'] as $row) {
-                $query = "SELECT * FROM smartphone INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
+                $query = "SELECT * FROM clothes INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
                 $res = mysqli_query($connect, $query);
                 while ($raw = mysqli_fetch_array($res)) {
                     echo ("<th scope='col'><img src='" . $raw['img'] . "' alt='' style='width: 100px'></th>");
@@ -107,36 +107,34 @@ if (isset($_POST['id_mob'])) {
         </tr>
         <tr>
             <?php
-            // Цикл для виведення значень параметрів 'soc' для порівнюваних мобільних пристроїв
+            // Цикл для виведення значень 
             foreach ($_SESSION['comp'] as $row) {
-                $query = "SELECT * FROM smartphone INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
+                $query = "SELECT * FROM clothes INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
                 $res = mysqli_query($connect, $query);
                 while ($raw = mysqli_fetch_array($res)) {
-                    echo ("<td>" . $raw['soc'] . "</td>");
+                    
                 }
             }
             ?>
         </tr>
         <tr>
             <?php
-            // Цикл для виведення значень параметрів 'display' та 'display_type' для порівнюваних мобільних пристроїв
+            // Цикл для виведення значень 
             foreach ($_SESSION['comp'] as $row) {
-                $query = "SELECT * FROM smartphone INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
+                $query = "SELECT * FROM clothes INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
                 $res = mysqli_query($connect, $query);
                 while ($raw = mysqli_fetch_array($res)) {
-                    echo ("<td>" . $raw['display'] ." ".$raw['display_type'] ."</td>");
                 }
             }
             ?>
         </tr>
         <tr>
             <?php
-            // Цикл для виведення значень параметра 'diagonal' для порівнюваних мобільних пристроїв
+            // Цикл для виведення значень параметра 
             foreach ($_SESSION['comp'] as $row) {
-                $query = "SELECT * FROM smartphone INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
+                $query = "SELECT * FROM clothes INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
                 $res = mysqli_query($connect, $query);
-                while ($raw = mysqli_fetch_array($res)) {
-                    echo ("<td>" . $raw['diagonal'] ." inch. </td>");
+                
                 }
             }
             ?>
@@ -145,43 +143,38 @@ if (isset($_POST['id_mob'])) {
             <?php
             foreach ($_SESSION['comp'] as $row) {
                 // Цикл для виведення значень параметра 'ram' для порівнюваних мобільних пристроїв
-                $query = "SELECT * FROM smartphone INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
+                $query = "SELECT * FROM clothes INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
                 $res = mysqli_query($connect, $query);
-                while ($raw = mysqli_fetch_array($res)) {
-                    echo ("<td>" . $raw['ram'] ."GB RAM</td>");
-                }
+                 
             }
             ?>
         </tr>
         <tr>
             <?php
-            // Цикл для виведення значень параметра 'rom' для порівнюваних мобільних пристроїв
+            // Цикл для виведення значень 
             foreach ($_SESSION['comp'] as $row) {
-                $query = "SELECT * FROM smartphone INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
+                $query = "SELECT * FROM clothes INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
                 $res = mysqli_query($connect, $query);
-                while ($raw = mysqli_fetch_array($res)) {
-                    echo ("<td>" . $raw['rom'] ."GB ROM</td>");
-                }
             }
+               
             ?>
         </tr>
         <tr>
             <?php
             // Цикл для виведення значень параметра 'battery' для порівнюваних мобільних пристроїв
             foreach ($_SESSION['comp'] as $row) {
-                $query = "SELECT * FROM smartphone INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
+                $query = "SELECT * FROM clothes INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
                 $res = mysqli_query($connect, $query);
-                while ($raw = mysqli_fetch_array($res)) {
-                    echo ("<td>" . $raw['battery'] ." mAh</td>");
+                
                 }
-            }
+            
             ?>
         </tr>
         <tr>
             <?php
-            // Цикл для виведення значень параметра 'weight' для порівнюваних мобільних пристроїв
+            // Цикл для виведення значень 
             foreach ($_SESSION['comp'] as $row) {
-                $query = "SELECT * FROM smartphone INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
+                $query = "SELECT * FROM clothes INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
                 $res = mysqli_query($connect, $query);
                 while ($raw = mysqli_fetch_array($res)) {
                     echo ("<td>" . $raw['weight'] ."g</td>");
@@ -191,9 +184,9 @@ if (isset($_POST['id_mob'])) {
         </tr>
         <tr>
             <?php
-            // Цикл для виведення значень параметра 'gsm' для порівнюваних мобільних пристроїв
+            // Цикл для виведення значень 
             foreach ($_SESSION['comp'] as $row) {
-                $query = "SELECT * FROM smartphone INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
+                $query = "SELECT * FROM clothes INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
                 $res = mysqli_query($connect, $query);
                 while ($raw = mysqli_fetch_array($res)) {
                     echo ("<td>" . $raw['gsm'] ."</td>");
@@ -203,9 +196,9 @@ if (isset($_POST['id_mob'])) {
         </tr>
         <tr>
             <?php
-            // Цикл для виведення значень параметра 'os' для порівнюваних мобільних пристроїв
+            // Цикл для виведення значень 
             foreach ($_SESSION['comp'] as $row) {
-                $query = "SELECT * FROM smartphone INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
+                $query = "SELECT * FROM clothes INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
                 $res = mysqli_query($connect, $query);
                 while ($raw = mysqli_fetch_array($res)) {
                     echo ("<td>" . $raw['os'] ."</td>");
@@ -215,9 +208,9 @@ if (isset($_POST['id_mob'])) {
         </tr>
         <tr>
             <?php
-            // Цикл для виведення значень параметра 'price' для порівнюваних мобільних пристроїв
+            // Цикл для виведення значень параметра 'price'
             foreach ($_SESSION['comp'] as $row) {
-                $query = "SELECT * FROM smartphone INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
+                $query = "SELECT * FROM clothes INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
                 $res = mysqli_query($connect, $query);
                 while ($raw = mysqli_fetch_array($res)) {
                     echo ("<td>" . $raw['price'] ." UAH </td>");
@@ -227,100 +220,24 @@ if (isset($_POST['id_mob'])) {
         </tr>
         <tr>
             <?php
-            // Цикл для виведення значень параметра 'cam_r1' для порівнюваних мобільних пристроїв
+            // Цикл для виведення значень параметра 
             foreach ($_SESSION['comp'] as $row) {
-                $query = "SELECT * FROM smartphone INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
+                $query = "SELECT * FROM clothes INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
                 $res = mysqli_query($connect, $query);
-                while ($raw = mysqli_fetch_array($res)) {
-                    echo ("<td>" . $raw['cam_r1'] ." mp</td>");
-                }
+               
             }
             ?>
         </tr>
         <tr>
             <?php
-            // Цикл для виведення значень параметра 'cam_r2' для порівнюваних мобільних пристроїв
+            // Цикл для виведення значень параметра 
             foreach ($_SESSION['comp'] as $row) {
-                $query = "SELECT * FROM smartphone INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
+                $query = "SELECT * FROM clothes INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
                 $res = mysqli_query($connect, $query);
-                while ($raw = mysqli_fetch_array($res)) {
-
-                    if ($raw['cam_r2'] != null) {
-                        $cam2 = $raw['cam_r2'] . "mp";
-                    } else {
-                        $cam2 = null;
-                    }
-                    echo ("<td>" . $cam2."</td>");
-                }
             }
             ?>
         </tr>
-        <tr>
-            <?php
-            // Цикл для виведення значень параметра 'cam_r3' для порівнюваних мобільних пристроїв
-            foreach ($_SESSION['comp'] as $row) {
-                $query = "SELECT * FROM smartphone INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
-                $res = mysqli_query($connect, $query);
-                while ($raw = mysqli_fetch_array($res)) {
-
-                    if ($raw['cam_r3'] != null) {
-                        $cam3 = $raw['cam_r3'] . "mp";
-                    } else {
-                        $cam3 = null;
-                    }
-                    echo ("<td>" . $cam3."</td>");
-                }
-            }
-            ?>
-        </tr>
-        <tr>
-            <?php
-            // Цикл для виведення значень параметра 'cam_r4' для порівнюваних мобільних пристроїв
-            foreach ($_SESSION['comp'] as $row) {
-                $query = "SELECT * FROM smartphone INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
-                $res = mysqli_query($connect, $query);
-                while ($raw = mysqli_fetch_array($res)) {
-
-                    if ($raw['cam_r4'] != null) {
-                        $cam4 = $raw['cam_r4'] . "mp";
-                    } else {
-                        $cam4 = null;
-                    }
-                    echo ("<td>" . $cam4."</td>");
-                }
-            }
-            ?>
-        </tr>
-        <tr>
-            <?php
-            // Цикл для виведення значень параметра 'cam_f1' для порівнюваних мобільних пристроїв
-            foreach ($_SESSION['comp'] as $row) {
-                $query = "SELECT * FROM smartphone INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
-                $res = mysqli_query($connect, $query);
-                while ($raw = mysqli_fetch_array($res)) {
-                    echo ("<td>" . $raw['cam_f1'] ." mp</td>");
-                }
-            }
-            ?>
-        </tr>
-        <tr>
-            <?php
-            // Цикл для виведення значень параметра 'cam_f2' для порівнюваних мобільних пристроїв
-            foreach ($_SESSION['comp'] as $row) {
-                $query = "SELECT * FROM smartphone INNER JOIN vendor_list v ON vendor = v.id_vendor WHERE id = $row";
-                $res = mysqli_query($connect, $query);
-                while ($raw = mysqli_fetch_array($res)) {
-
-                    if ($raw['cam_f2'] != null) {
-                        $camf = $raw['cam_f2'] . "mp";
-                    } else {
-                        $camf = null;
-                    }
-                    echo ("<td>" . $camf."</td>");
-                }
-            }
-            ?>
-        </tr>
+       
         </tbody>
     </table>
 </div>
