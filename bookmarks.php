@@ -44,13 +44,13 @@ if (isset($_SESSION['user'])) {
     <div class="md-form active-purple-4 col-lg-4">
         <!-- Форма для пошуку з інтерактивним відображенням (active-purple-4) -->
         <input class="form-control" type="text" placeholder="Search" aria-label="Search">
-        <!-- Поле введення для пошуку мобільних пристроїв -->
+        <!-- Поле введення для пошуку  -->
     </div>
       <!-- Навігаційна панель з посиланням на Порівняння та Закладки -->
     <nav class="my-2 my-md-0 mr-md-3">
-        <!-- Посилання на сторінку порівняння мобільних пристроїв -->
+        <!-- Посилання на сторінку порівняння  -->
         <a class="p-2 text-dark" href="#">Comparison</a>
-        <!-- Посилання на сторінку закладок мобільних пристроїв -->
+        <!-- Посилання на сторінку закладок  -->
       <a class="p-2 text-dark" href="bookmarks.php">Bookmarks</a>
     </nav>
     <?php
@@ -75,16 +75,16 @@ if (isset($_SESSION['user'])) {
     <?php
     while ($row = mysqli_fetch_array($res)) {
         // Отримання даних про закладку з бази даних
-      $querry1 = "SELECT v.name, s.model, s.img FROM smartphone s INNER JOIN vendor_list v ON s.vendor = v.id_vendor WHERE s.id = " . $row['bookmark_id'] . "";
+      $querry1 = "SELECT v.name, s.model, s.img FROM clothes s INNER JOIN vendor_list v ON s.vendor = v.id_vendor WHERE s.id = " . $row['bookmark_id'] . "";
       $mob = mysqli_fetch_assoc(mysqli_query($connect, $querry1));
 
 
       echo ("
                         <div class='card-header mb-3 col-lg-12'>
                         <div class='row d-flex justify-content-around'>
-                         <!-- Зображення мобільного пристрою з розміром 30 пікселів та відступом справа -->
+                         <!-- Зображення з розміром 30 пікселів та відступом справа -->
                         <img src='" . $mob['img'] . "' alt='' style='width: 30px' class='mr-3'>
-                                    <!-- Заголовок з ім'ям та моделлю мобільного пристрою -->
+                                    <!-- Заголовок з ім'ям  -->
                             <h4 class='my-0 font-weight-normal'>" .
         $mob['name'] . " " . $mob['model'] . "
                             </h4>
