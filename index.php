@@ -2,7 +2,7 @@
 session_start(); // Розпочинаємо сесію для зберігання та використання даних сесії
 require_once 'includes/connect.php'; // Підключаємо скрипт для з'єднання з базою даних
 $link = $connect; // Встановлюємо з'єднання з базою даних
-// Формуємо SQL-запит для отримання даних про смартфони
+// Формуємо SQL-запит для отримання даних
 $queryNazva = "SELECT v.name, s.model, s.id, s.img, s.soc, s.display, s.display_type, s.ram, s.rom, s.battery, s.diagonal, s.weight, s.gsm, s.os, s.cam_r1, s.cam_r2, s.cam_r3, s.cam_r4, s.cam_f1, s.cam_f2, s.price FROM smartphone s INNER JOIN vendor_list v ON s.vendor = v.id_vendor";
 // Перевірка наявності запиту в сесії та його використання
 if (isset($_SESSION['querry'])) {
@@ -17,7 +17,7 @@ $resultNazva = mysqli_query($link, $queryNazva); // Виконання SQL-за�
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width" initial-scale=1.0>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Система з вибору мобільних пристроїв</title>
+    <title>Система з вибору</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <!-- Шрифт Awesome -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
@@ -85,7 +85,7 @@ $resultNazva = mysqli_query($link, $queryNazva); // Виконання SQL-за�
                                     <option value="desc">Desc</option>
                                 </select>
                             </div>
-                            <!-- Випадаючий список для вибору фільтрації за діагоналлю -->
+                            <!-- Випадаючий список для вибору фільтрації  -->
                             <div class="col-md-12 mb-3">
                                 <label for="diagf">Order by diagonal:</label>
                                 <select class="custom-select d-block" name="diagf" id="diagf" form="filter">
@@ -106,33 +106,9 @@ $resultNazva = mysqli_query($link, $queryNazva); // Виконання SQL-за�
                 </div>
             </div>
         </div>
-        <!-- Відображення списку смартфонів -->
-        <div class="col-lg-9 borderk">
-            <?php
-            while ($rowNazva = mysqli_fetch_array($resultNazva)) {
-                if ($rowNazva['cam_r2'] != null) {
-                    $cam2 = ", " . $rowNazva['cam_r2'] . "mp";
-                } else {
-                    $cam2 = null;
-                }
-                if ($rowNazva['cam_r3'] != null) {
-                    $cam3 = ", " . $rowNazva['cam_r3'] . "mp";
-                } else {
-                    $cam3 = null;
-                }
-                if ($rowNazva['cam_r4'] != null) {
-                    $cam4 = ", " . $rowNazva['cam_r4'] . "mp";
-                } else {
-                    $cam4 = null;
-                }
-                if ($rowNazva['cam_f2'] != null) {
-                    $camf2 = ", " . $rowNazva['cam_f2'] . "mp";
-                } else {
-                    $camf2 = null;
-                }
-
+       
                 $user_id = isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : NULL;
-                // Початок виведення карточки для мобільного пристрою
+                // Початок виведення 
                 echo ("<div class='card mb-4 shadow-sm'>
                 <div class='card-header'>
                   <h4 class='my-0 font-weight-normal'>" . $rowNazva['name'] . " " . $rowNazva['model'] . "</h4>
@@ -145,22 +121,18 @@ $resultNazva = mysqli_query($link, $queryNazva); // Виконання SQL-за�
                     <h3 class='card-title pricing-card-title'>" . $rowNazva['ram'] . "/" . $rowNazva['rom'] . " GB</h3>
                     <h3 class='card-title pricing-card-title'>" . $rowNazva['price'] . " UAH</h3>
                     </div>
-                    <p>SoC: " . $rowNazva['soc'] . " • Display: " . $rowNazva['diagonal'] . " " . $rowNazva['display_type'] . " " . $rowNazva['display'] . " • Battery: " . $rowNazva['battery'] . " mAh • Weight: " . $rowNazva['weight'] . "g • Mobile networks: " . $rowNazva['gsm'] . " • OS: " . $rowNazva['os'] .
-                    " • Rear camera: " . $rowNazva['cam_r1'] . "mp" . $cam2 . $cam3 . $cam4 .
-                    " • Selfie camera: " . $rowNazva['cam_f1'] . "mp" . $camf2 .
-                    "</p>
-                  </div>
+
                   </div>
                   <div class='d-flex justify-content-around'>
                   <form action='comparison.php' method='POST' class='col-lg-5'>
                     <input type='hidden' value=" . $rowNazva['id'] . " name='id_mob'>
-                    <button type='submit' class='btn btn-lg  btn-outline-primary col-lg-12'>Add comparison</button> <!-- Створення кнопки Add comparison яка додає пристрій до списку порівнянь -->
+                    <button type='submit' class='btn btn-lg  btn-outline-primary col-lg-12'>Add comparison</button> <!-- Створення кнопки Add comparison яка додає до списку порівнянь -->
                   </form>
                   <form action='/includes/addbook.php' method='POST' class='col-lg-5'>
 
                     <input type='hidden' value=" . $user_id . " name='id_user'>
                     <input type='hidden' value=" . $rowNazva['id'] . " name='id_mob'>
-                    <button type='submit' class='btn btn-lg btn btn-primary col-lg-12'>Add bookmarks</button> <!-- Створення кнопки Add bookmarks яка додає пристрій до закладок -->
+                    <button type='submit' class='btn btn-lg btn btn-primary col-lg-12'>Add bookmarks</button> <!-- Створення кнопки Add bookmarks яка додає товар до закладок -->
                   </form>
                 </div>
                  
