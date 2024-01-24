@@ -54,10 +54,10 @@ if (!isset($_SESSION['user'])) { //Перевіряємо, чи у сесії к
                     </form>
                 <!-- Виведення кнопки "Log out" -->
                     <a class='btn btn-primary btn-lg btn-block' href='includes/logout.php'>Log out</a>
-                <!-- PHP-блок, який перевіряє, чи користувач має рівень дозволу "admin". Якщо так, то виводяться дві кнопки: "Add smartphone" і "Edit smartphone" -->
+                <!-- PHP-блок, який перевіряє, чи користувач має рівень дозволу "admin". Якщо так, то виводяться дві кнопки: "Add " і "Edit " -->
                     <?php if ($_SESSION['user']['permission'] == "admin") {
-                        echo ("<a class='btn btn-primary btn-lg btn-block greenbtn' href='addmobile.php'>Add smartphone</a>");
-                        echo ("<a class='btn btn-primary btn-lg btn-block redbtn' href='includes/editmobile.php'>Edit smartphone</a>");
+                        echo ("<a class='btn btn-primary btn-lg btn-block greenbtn' href='addmobile.php'>Add </a>");
+                        echo ("<a class='btn btn-primary btn-lg btn-block redbtn' href='includes/editmobile.php'>Edit </a>");
                     } ?>
             </div>
         </div>
